@@ -1,158 +1,228 @@
 import 'package:flutter/material.dart';
+import 'package:direct_select/direct_select.dart';
+
+import '../themes/app_theme.dart';
+import 'package:f_currency_converter_template/utils/constants.dart';
+import 'package:f_currency_converter_template/ui/widgets/selection_item.dart';
 import 'one_key.dart';
 
 // en este widget mostramos el keypad y los valores de las monedas
 class KeyPad extends StatefulWidget {
-  const KeyPad(
-      {Key? key,
-      required this.textCurrency1,
-      required this.textCurrency2,
-      required this.rate})
-      : super(key: key);
+  const KeyPad({Key? key }) : super(key: key);
 
   // estos tres valores son recibidos de converter_page
-  final String textCurrency1;
-  final String textCurrency2;
-  final double rate;
+  //String textCurrency1;
+  //String textCurrency2;
+  //double rate;
 
   @override
   State<KeyPad> createState() => _KeyPadState();
 }
 
 class _KeyPadState extends State<KeyPad> {
-  // valor de la moneda convertida
+  int _currency1Selected = 0;
+  int _currency2Selected = 0;
   double _currency2 = 0;
-  // el valor de la moneda que es introducida en el keypad
-  int _currency1 = 0;
+  double _currency1 = 0;
+  double _rate = 0;
+  String _currencyString = "0";
 
-  // función que cambia el estado del widget (_currency1, _currency2)
-  void _onPressed(int k) {
+  void _cleanKeyPad() {
+    _currency1 = 0;
+    _currency2 = 0;
+    _currencyString = "0";
+  }
+
+  void _assign() {
+    _rate = rates[_currency1Selected][_currency2Selected];
+
+    _currency1 = double.parse(_currencyString);
+    _currency2 = _currency1 * _rate;
+  }
+
+  void _onPressed(int key) {
     setState(() {
-      if (k == 10) {
-        // TODO
-        // cuando k es 10 se debe volver el estado a cero
-      } else {
-        // TODO
-        // _currency1 debe cambiar con el keypad
-        // _currency2 debe cambiar de acuerdo con _currency1 y la tasa de cambio
+      switch (key) {
+        case 10: _cleanKeyPad();
+          break;
+      /*case 11:
+          {
+            if (_currencyString.isNotEmpty && _currencyString != "0") {
+              _currencyString = _currencyString.substring(0, _currencyString.length - 1);
+              _currencyString = _currencyString.isEmpty ? "0" : _currencyString;
+              _assign();
+            } else {
+              _cleanKeyPad();
+            }
+          }
+          break;*/
+        default:
+          {
+            if (_currencyString.length < 12) {
+              _currencyString += key == 11 ? "." : key.toString();
+              _assign();
+            }
+          }
+          break;
       }
     });
+  }
+
+  List<Widget> _buildItems() => currencies.map((val) => SelectionItem(title: val)).toList();
+
+  Widget _buttonClear({required int number, required Widget child}) {
+    return Expanded(
+        flex: 1,
+        child: MaterialButton(
+            key: const Key("reset"),
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            onPressed: () => _onPressed(number),
+            child: child)
+    );
   }
 
   @override
   void didUpdateWidget(covariant oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // aquí garantizamos que cuando el widget refresca el estado va a cero
-    _currency2 = 0;
-    _currency1 = 0;
+    _cleanKeyPad();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(children: [
+      Expanded(
+        flex: 1,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+          color: AppTheme.colorPrimary,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(widget.textCurrency1),
-              ),
-              Expanded(
-                child: Container(),
-              ),
+              //currency1
               Container(
-                  padding: const EdgeInsets.all(8.0),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _currency1.toString(),
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 35),
-                  )),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('se muestra textCurrency1'),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    num.parse(_currency2.toStringAsFixed(4)).toString(),
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 35),
-                  ))
-            ],
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  // TODO
-                  // en cada OneKey se manda el número y _onPressed para callback
-                  const Text('OneKey para 7, 8 y 9'),
-                ]),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  // TODO
-                  // en cada OneKey se manda el número y _onPressed para callback
-                  const Text('OneKey para 6, 5 y 4'),
-                ]),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  // TODO
-                  // en cada OneKey se manda el número y _onPressed para callback
-                  const Text('OneKey para 1, 2 y 3'),
-                ]),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: MaterialButton(
-                      key: const Key("reset"),
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      color: Theme.of(context).colorScheme.secondary,
-                      onPressed: () {
-                        _onPressed(10);
-                      },
-                      child: const Text("Reset",
-                          style: TextStyle(
-                            fontSize: 26.0,
-                            color: Colors.white,
-                          ))),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: DirectSelect(
+                            itemExtent: 45.0,
+                            selectedIndex: 0,
+                            backgroundColor: AppTheme.colorPrimary,
+                            onSelectedItemChanged: (index) {
+                              setState(() {
+                                _currency1Selected = index ?? 0;
+                                _assign();
+                              });
+                            },
+                            items: _buildItems(),
+                            child: SelectionItem(
+                              isForList: false,
+                              title: currencies[_currency1Selected],
+                            )
+                        )
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              _currency1.toStringAsFixed(2),
+                              style: AppTheme.textStyleMoney,
+                            )
+                        )
+                    ),
+                  ],
                 ),
               ),
-              // TODO
-              // en cada OneKey se manda el número y _onPressed para callback
-              const Text('OneKey para 0'),
-            ]),
-          )
-        ]);
+
+              //currency2
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //Text(widget.textCurrency1),
+                    Expanded(
+                        flex: 1,
+                        child: DirectSelect(
+                            itemExtent: 45.0,
+                            selectedIndex: 0,
+                            backgroundColor: AppTheme.colorPrimary,
+                            onSelectedItemChanged: (index) {
+                              setState(() {
+                                _currency2Selected = index ?? 0;
+                                _assign();
+                              });
+                            },
+                            items: _buildItems(),
+                            child: SelectionItem(
+                              isForList: false,
+                              title: currencies[_currency2Selected],
+                            ))),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              _currency2.toStringAsFixed(2),
+                              textAlign: TextAlign.right,
+                              style: AppTheme.textStyleMoney,
+                            )
+                        )
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+
+      //Numbers
+      Expanded(
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    OneKey(number: 7, callback: _onPressed),
+                    OneKey(number: 8, callback: _onPressed),
+                    OneKey(number: 9, callback: _onPressed),
+                  ],
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      OneKey(number: 4, callback: _onPressed),
+                      OneKey(number: 5, callback: _onPressed),
+                      OneKey(number: 6, callback: _onPressed)
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      OneKey(number: 1, callback: _onPressed),
+                      OneKey(number: 2, callback: _onPressed),
+                      OneKey(number: 3, callback: _onPressed)
+                    ]),
+                Row(children: <Widget>[
+                  _buttonClear(
+                      number: 10,
+                      child: Text("C", style: AppTheme.textStyleClean)
+                  ),
+                  OneKey(number: 0, callback: _onPressed),
+                  //_buttonClear(number: 11, child: const Icon(Icons.backspace_outlined))
+                  _buttonClear(number: 11, child: const Text("."))
+                ])
+              ],
+            ),
+          ))
+    ]);
   }
 }

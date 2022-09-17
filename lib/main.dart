@@ -3,5 +3,5 @@ import 'ui/my_app.dart';
 
 // punto de entrada de la aplicación
 void main() {
-  runApp(const MyApp());
+  runApp(const CurrencyConverterApp());
 }

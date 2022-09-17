@@ -1,13 +1,15 @@
-# Reto # 1
+# Reto #1 Currency Converter
+Aplicativo para la conversión de monedas. Actualmente solo usa tres, COP, USD y EUR.
 
-Proyecto base para el primer reto
+### Cambios
+Se realizó un nuevo cambio en el diseño, además del manejo del punto en las conversiones.
 
-El código incluye comentarios que explican la estructura del proyecto y los puntos en los que se tiene que trabajar están marcados con un TODO. 
+### Demo
+El siguiente enlace contiene un video de la aplicación en ejecución.
 
-El siguiente es un demo de la interfaz a la que se debe llegar (funcionalidades adicionales o mejoras a la interfaz son permitidas):
+https://drive.google.com/drive/u/0/folders/1oEY9WbDhuNWNDBlLwOnwF43ermKyPqTO
 
-<img src="https://user-images.githubusercontent.com/4458129/173209201-ecf02c3e-8571-42a0-92d5-5a9111f5b3b0.gif" width="300" />
-
-Solución:
-
-https://github.com/MisionTIC4b/f_currency_converter
+#### Realizado por Grupo 6
+##### Integrantes
+- Jhon Jairo Diaz Matinez
+- 

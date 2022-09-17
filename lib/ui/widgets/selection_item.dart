@@ -1,3 +1,4 @@
+import 'package:f_currency_converter_template/ui/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class SelectionItem extends StatelessWidget {
@@ -9,32 +10,35 @@ class SelectionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60.0,
-      child: isForList
-          ? Padding(
+      height: 50.0,
+      child: isForList ? _buildItem(context, Alignment.center) /*Padding(
               child: _buildItem(context),
-              padding: const EdgeInsets.all(10.0),
-            )
+              padding: const EdgeInsets.all(0.0),
+            )*/
           : Card(
-              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Stack(
-                children: <Widget>[
-                  _buildItem(context),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.arrow_drop_down),
-                  )
-                ],
-              ),
+        elevation: 0,
+        color: AppTheme.colorPrimary,
+        //margin: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Stack(
+          children: <Widget>[
+            const Align(
+              alignment: Alignment.centerRight,
+              child: Icon(Icons.keyboard_arrow_down_sharp, color: AppTheme.colorWhite),
             ),
+            _buildItem(context, Alignment.centerLeft),
+          ],
+        ),
+      ),
     );
   }
 
-  _buildItem(BuildContext context) {
+  _buildItem(BuildContext context, Alignment alignment) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      alignment: Alignment.center,
-      child: Text(title),
+      //margin: const EdgeInsets.only(right: 8.0),
+      //alignment: Alignment.centerLeft,
+      alignment: alignment,
+      child: Text(title, style: AppTheme.textStyleCurrency),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:f_currency_converter_template/ui/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class OneKey extends StatelessWidget {
@@ -10,22 +11,14 @@ class OneKey extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO.
-    // te le mides a mejorar este key??
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-        child: MaterialButton(
-            key: Key(number.toString()),
-            color: Theme.of(context).primaryColor,
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-            onPressed: () {
-              callback(number);
-            },
-            child: Text(number.toString(),
-                style: const TextStyle(
-                  fontSize: 26.0,
-                  color: Colors.white,
-                ))),
+      flex: 1,
+      child: MaterialButton(
+          textColor: AppTheme.colorBlack,
+          key: Key(number.toString()),
+          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+          onPressed: () => callback(number),
+          child: Text(number.toString()),
       ),
     );
   }
