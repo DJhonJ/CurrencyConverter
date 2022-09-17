@@ -12,4 +12,3 @@ https://drive.google.com/drive/u/0/folders/1oEY9WbDhuNWNDBlLwOnwF43ermKyPqTO
 #### Realizado por Grupo 6
 ##### Integrantes
 - Jhon Jairo Diaz Matinez
-- 
